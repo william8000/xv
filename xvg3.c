@@ -141,7 +141,7 @@ LoadG3 ( fname, pinfo )
 	memcpy(bp, bytes[row], cols);	
 
     for ( row = 0, bp = pic; row < rows; ++row, bp += cols )
-	if (row==0 | (row>0 && bytes[row]!=bytes[row-1])) free(bytes[row]);
+	if (row==0 || (row>0 && bytes[row]!=bytes[row-1])) free(bytes[row]);
 
     pinfo->frmType = F_G3;
     pinfo->type = PIC8;

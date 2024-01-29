@@ -41,6 +41,10 @@
  * OF THIS SOFTWARE.
  */
 
+#ifdef TIFF_UINT32_T
+#define uint32_t TIFF_UINT32_T
+#define uint16_t TIFF_UINT16_T
+#endif
 
 static int   copyTiff    PARM((TIFF *, char *));
 static int   cpStrips    PARM((TIFF *, TIFF *));
