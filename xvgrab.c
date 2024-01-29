@@ -280,11 +280,10 @@ int Grab()
   }
 
   else {  /* TRACK A RECTANGLE */
-    int    origrx, origry;
 
     clickWin = rootW;
-    origrx = ix = x2 = rx;
-    origry = iy = y2 = ry;
+    ix = x2 = rx;
+    iy = y2 = ry;
     iw = ih = 0;
 
     XGrabServer(theDisp);

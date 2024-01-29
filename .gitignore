@@ -4,3 +4,5 @@ vdcomp
 xcmap
 xvpictoppm
 *.o
+*.err
+*-

@@ -856,9 +856,7 @@ static int brChkEvent(br, xev)
 #endif
 
   if (xev->type == Expose) {
-    int x,y,w,h;
     XExposeEvent *e = (XExposeEvent *) xev;
-    x = e->x;  y = e->y;  w = e->width;  h = e->height;
 
     /* throw away excess redraws for 'dumb' windows */
     if (e->count > 0 && (e->window == br->scrl.win))
@@ -915,7 +913,7 @@ static int brChkEvent(br, xev)
 
   else if (xev->type == ButtonPress) {
     XButtonEvent *e = (XButtonEvent *) xev;
-    int i,x,y;
+    int x,y;
     x = e->x;  y = e->y;
 
 #ifdef VS_RESCMAP
@@ -933,7 +931,7 @@ static int brChkEvent(br, xev)
       if      (e->window == br->win)      clickBrow(br,x,y);
       else if (e->window == br->scrl.win) SCTrack(&(br->scrl),x,y);
       else if (e->window == br->iconW) {
-	i = clickIconWin(br, x,y,(unsigned long) e->time,
+	clickIconWin(br, x,y,(unsigned long) e->time,
 			 (e->state&ControlMask) || (e->state&ShiftMask));
       }
       else rv = 0;
@@ -1954,7 +1952,7 @@ static int clickIconWin(br, mx, my, mtime, multi)
     int          x, y, rootx, rooty, iwx, iwy, bwx, bwy;
     unsigned int mask;
     Cursor       curs;
-    int          samepos, oldx, oldy, oldbrnum, destic, origsval, first;
+    int          oldx, oldy, oldbrnum, destic, origsval, first;
     int          hasrect, rx, ry, rw, rh;
 
     rx = ry = rw = rh = 0;
@@ -1978,7 +1976,7 @@ static int clickIconWin(br, mx, my, mtime, multi)
 	for (i=0; i<MAXBRWIN; i++)
 	  XDefineCursor(theDisp,binfo[i].iconW, curs);
 
-	samepos = oldx = oldy = oldbrnum = 0;
+	oldx = oldy = oldbrnum = 0;
 
 	while (1) {  /* wait for button 1 to be released */
 	  while (!XQueryPointer(theDisp,rootW,&rW,&win,&rootx,&rooty,
@@ -2048,7 +2046,7 @@ static int clickIconWin(br, mx, my, mtime, multi)
 	       a rect drag */
 
 	    if (sel>=0 && (oldx!=x || oldy!=y || oldbrnum!=i)) {  /* moved */
-	      samepos = 0;  oldx = x;  oldy = y;  oldbrnum = i;
+	      oldx = x;  oldy = y;  oldbrnum = i;
 	    }
 	    else {
 	      int scamt = 0;
@@ -3741,7 +3739,10 @@ static void genIcon(br, bf)
   int     iwide, ihigh;
   byte   *icon24, *icon8;
   char    str[256], str1[256], readname[128], uncompname[128];
-  char    basefname[128], *uncName;
+  char   *uncName;
+#if (defined(VMS) && !defined(GUNZIP))
+  char    basefname[128];
+#endif
 
 
   if (!bf || !bf->name || bf->name[0] == '\0') return;   /* shouldn't happen */
@@ -3840,7 +3841,7 @@ ms_auto_no:
 #endif /* HAVE_MGCSFX_AUTO */
 
   /* get rid of comments.  don't need 'em */
-  if (pinfo.comment) free(pinfo.comment);  pinfo.comment = (char *) NULL;
+  if (pinfo.comment) { free(pinfo.comment); } pinfo.comment = (char *) NULL;
 
   if (filetype == RFT_ERROR) {
     sprintf(str,"Couldn't open file '%s'", bf->name);

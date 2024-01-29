@@ -17,12 +17,15 @@ CC = cc -g
 #       -Wpointer-arith -Wcomment -Wformat -Wchar-subscripts \
 #       -Wuninitialized -Wparentheses
 
+# use this for debugging
+#CFLAGS = -g -Wall -Wpointer-arith -Wcast-align -Wwrite-strings -Wnested-externs
 
 CFLAGS = -O
 #
 # these are the usual optimization and warning options for gcc; all such
 # warnings but one (mktemp() use) have been eliminated (at least on Linux):
-#CFLAGS = -O3 -Wall
+CC = cc
+CFLAGS = -O2 -Wall
 #
 # slightly more warnings... older code often made non-const pointers to
 # static strings (nothing should blow up unless something tries to write
@@ -66,7 +69,7 @@ APPDIR = $(PREFIX)/share/applications
 LIBDIR = $(PREFIX)/lib/xv
 SYSCONFDIR = /etc
 DESTDIR =
-
+LIBDIR = /lib64
 
 buildit: all
 
@@ -99,7 +102,8 @@ TIFFINC = -I$(TIFFDIR)/include
 ### libtiff 3.5 and up may be compiled with zlib and libjpeg, but the
 ### dependency is properly handled in LIBS line ~247 lines below
 ###
-TIFFLIB = -L$(TIFFDIR)/lib -ltiff
+TIFFLIB = -L$(LIBDIR) -ltiff
+#TIFFLIB = -L$(TIFFDIR)/lib -ltiff
 #TIFFLIB = $(TIFFDIR)/lib/libtiff.a
 #TIFFLIB = -L$(TIFFDIR) -ltiff
 #TIFFLIB = $(TIFFDIR)/libtiff.a
@@ -113,7 +117,7 @@ TIFFLIB = -L$(TIFFDIR)/lib -ltiff
 #ifdef HaveWEBP
 WEBP = -DDOWEBP
 WEBPDIR = /usr
-WEBPLIB = -L$(WEBPDIR)/lib -lwebp
+WEBPLIB = -L$(LIBDIR) -lwebp
 WEBPINC = -I$(WEBPDIR)/include
 #endif
 
@@ -134,7 +138,8 @@ JPEGDIR = /usr
 JPEGINC = -I$(JPEGDIR)/include
 #JPEGINC = -I$(JPEGDIR)
 ###
-JPEGLIB = -L$(JPEGDIR)/lib -ljpeg
+JPEGLIB = -L$(LIBDIR) -ljpeg
+#JPEGLIB = -L$(JPEGDIR)/lib -ljpeg
 #JPEGLIB = -L$(JPEGDIR) -ljpeg
 #JPEGLIB = $(JPEGDIR)/libjpeg.a
 ###
@@ -159,7 +164,8 @@ PNGDIR = /usr
 PNGINC = -I$(PNGDIR)/include
 #PNGINC = -I$(PNGDIR)
 ###
-PNGLIB = -L$(PNGDIR)/lib -lpng
+PNGLIB = -L$(LIBDIR) -lpng
+#PNGLIB = -L$(PNGDIR)/lib -lpng
 #PNGLIB = -L$(PNGDIR) -lpng
 #PNGLIB = $(PNGDIR)/libpng.a
 
@@ -176,7 +182,8 @@ ZLIBDIR = /usr
 ZLIBINC = -I$(ZLIBDIR)/include
 #ZLIBINC = -I$(ZLIBDIR)
 ###
-ZLIBLIB = -L$(ZLIBDIR)/lib -lz
+ZLIBLIB = -L$(LIBDIR) -lz
+#ZLIBLIB = -L$(ZLIBDIR)/lib -lz
 #ZLIBLIB = -L$(ZLIBDIR) -lz
 #ZLIBLIB = $(ZLIBDIR)/libz.a
 
@@ -185,17 +192,18 @@ ZLIBLIB = -L$(ZLIBDIR)/lib -lz
 ### if, for whatever reason, you're unable to get the JasPer JPEG-2000 library
 ### to compile on your machine, *COMMENT OUT* the following lines
 ###
-JP2K    = -DDOJP2K
+#JP2K    = -DDOJP2K
 ###
-JP2KDIR = /usr
+#JP2KDIR = /usr
 #JP2KDIR = /usr/local/lib
 #JP2KDIR = ../../jasper
 ###
 #JP2KINC = -I/usr/local/include
-JP2KINC = -I$(JP2KDIR)
+#JP2KINC = -I$(JP2KDIR)
 ###
 #JP2KLIB = $(JP2KDIR)/libjasper.a
-JP2KLIB = -L$(JP2KDIR) -ljasper
+#JP2KLIB = -L$(JP2KDIR) -ljasper
+#JP2KLIB = -L$(LIBDIR) -ljasper -lopenjp2
 
 
 ### if, for whatever reason, you don't want to build G3 facsimile support,

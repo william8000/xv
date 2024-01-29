@@ -385,7 +385,7 @@ int mx,my;
 
 
     else if (cW == gp->gwin) {  /* clicked in graph */
-      int h, vertonly, offx, offy;
+      int h, vertonly;
 
       XTranslateCoordinates(theDisp, gp->win, gp->gwin,mx,my,&mx,&my,&cW);
 
@@ -402,7 +402,7 @@ int mx,my;
       }
 
       else {  /* track handle */
-	int origx, origy, orighx, orighy, dx, dy, olddx, olddy, grab;
+	int origx, origy, orighx, orighy, dx, dy, grab;
 
 	drawHandPos(gp, h);
 
@@ -417,12 +417,8 @@ int mx,my;
 	orighx = gp->hands[h].x;  orighy = gp->hands[h].y;
 
 	gp->gammamode = 0;
-	offx = gp->hands[h].x - origx;
-	offy = gp->hands[h].y - origy;
 
 	vertonly = (h==0 || h==(gp->nhands-1));
-
-	olddx = 0;  olddy = 0;
 
 	while (XQueryPointer(theDisp,rootW,&rW,&cW,&rx,&ry,&x,&y,&mask)) {
 	  int newx, newy;
@@ -457,7 +453,6 @@ int mx,my;
 	    drawGraf(gp,0);
 	    drawHandPos(gp, h);
 	    rv = 1;
-	    olddx = dx;  olddy = dy;
 
 	    if (gp->drawobj) (gp->drawobj)();
 	  }
@@ -712,7 +707,7 @@ char *str;
      able to hold it... */
 
   int i;
-  char cstr[16];
+  char cstr[32];
 
   if (gp->gammamode) {
     sprintf(str,"G %g", gp->gamma);

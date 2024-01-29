@@ -50,6 +50,8 @@
 
 #ifdef HAVE_JP2K
 
+/* #define JAS_DEBUG_H 1 */
+
 #include <jasper/jasper.h>
 /* missing prototype in 1.701.0, sigh: */
 jas_stream_t *jas_stream_freopen PARM((const char *, const char *, FILE *));
@@ -74,7 +76,7 @@ static const char *fbasename,  /* File's base name, for error/warning msgs */
    1.701, we must override everything else packaged in the "jas_debug.o" module
    with it, otherwise we get "duplicate definition" messages from the linker.
 */
-int jas_getdbglevel(void) {return 0;}
+static inline int jas_getdbglevel(void) {return 0;}
 int jas_setdbglevel(int n) {return 0;}
 int jas_memdump(FILE *fp,void *data,size_t len) {return 0;}
 

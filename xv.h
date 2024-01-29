@@ -1101,7 +1101,7 @@ typedef struct { byte *pic;                  /* image data */
 #define GFB_RESET  4
 #define GFB_GAMMA  5
 
-#define GVMAX 8
+#define GVMAX 16
 
 typedef struct {  Window win;               /* window ID */
 		  Window gwin;              /* graph subwindow */
@@ -1282,7 +1282,7 @@ WHERE XImage        *theImage;     /* X version of epic */
 
 WHERE int           ncols;         /* max # of (different) colors to alloc */
 
-WHERE char          dummystr[128]; /* dummy string used for error messages */
+WHERE char          dummystr[256]; /* dummy string used for error messages */
 WHERE char          initdir[MAXPATHLEN];   /* cwd when xv was started */
 WHERE char          searchdir[MAXPATHLEN]; /* '-dir' option */
 WHERE char          fullfname[MAXPATHLEN]; /* full name of current file */

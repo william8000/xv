@@ -754,8 +754,7 @@ XEvent *xev;
 void
 PCDSetParamOptions(const char *fname)
 {
-  int cur;
-  cur = RBWhich(resnRB);
+  RBWhich(resnRB);
 
   RBSetActive(resnRB,0,1);
   RBSetActive(resnRB,1,1);

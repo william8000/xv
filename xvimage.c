@@ -726,15 +726,13 @@ static void do_pan_calc(offx, offy, xp,yp)
      coords (returned in xp,yp) such that the 'pan window' remains entirely
      within the image boundaries */
 
-  int mx, my, eprx, epry, eprw, eprh, pprx, ppry, pprw, pprh;
+  int mx, my, eprx, epry, pprx, ppry, pprw, pprh;
 
   mx = *xp;  my = *yp;
 
   /* compute corners of pan rect in eWIDE,eHIGH coords */
   eprx = offx - mx;
   epry = offy - my;
-  eprw = eWIDE;
-  eprh = eHIGH;
 
   /* compute corners of pan rect in pWIDE,pHIGH coords */
   CoordE2P(eprx, epry, &pprx, &ppry);
@@ -3296,7 +3294,7 @@ static int ReadImageFile1(name, pinfo)
      PICINFO *pinfo;
 {
   int  i, ftype;
-  char uncompname[128], errstr[256], *uncName, *readname;
+  char uncompname[128], errstr[256], *uncName;
 #ifdef VMS
   char basefname[128];
 #endif
@@ -3315,7 +3313,6 @@ static int ReadImageFile1(name, pinfo)
 
     if (UncompressFile(uncName, uncompname, ftype)) {
       ftype = ReadFileType(uncompname);
-      readname = uncompname;
     }
     else {
       sprintf(errstr, "Error:  Couldn't uncompress file '%s'", name);

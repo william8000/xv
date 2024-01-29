@@ -379,7 +379,7 @@ int TextView(fname)
   int   filetype;
   long  textlen;
   char *text, buf[512], title[128], rfname[MAXPATHLEN+1];
-  char *basefname[128];  /* just current fname, no path */
+  char basefname[128];  /* just current fname, no path */
   FILE *fp;
   char filename[MAXPATHLEN+1];
 
@@ -715,9 +715,7 @@ static int tvChkEvent(tv, xev)
   if (!hasBeenSized) return 0;  /* ignore everythng until we get 1st Resize */
 
   if (xev->type == Expose) {
-    int x,y,w,h;
     XExposeEvent *e = (XExposeEvent *) xev;
-    x = e->x;  y = e->y;  w = e->width;  h = e->height;
 
     /* throw away excess redraws for 'dumb' windows */
     if (e->count > 0 && (e->window == tv->vscrl.win ||

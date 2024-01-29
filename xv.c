@@ -180,7 +180,7 @@ int main(argc, argv)
 #endif
   XColor ecdef;
   Window rootReturn, parentReturn, *children;
-  unsigned int numChildren, rootDEEP;
+  unsigned int numChildren;
   int endian_test1 = 1;
   char *endian_test2 = (char *)&endian_test1;
 
@@ -437,8 +437,6 @@ int main(argc, argv)
   maxWIDE   = vrWIDE  = dispWIDE  = DisplayWidth(theDisp,theScreen);
   maxHIGH   = vrHIGH  = dispHIGH  = DisplayHeight(theDisp,theScreen);
 
-
-  rootDEEP = dispDEEP;
 
   /* things dependent on theVisual:
    *    dispDEEP, theScreen, rootW, ncells, theCmap, theGC,
@@ -2582,8 +2580,8 @@ ms_auto_no:
   if (pinfo.w==0 || pinfo.h==0) {  /* shouldn't happen, but let's be safe */
     SetISTR(ISTR_INFO,"Image size '0x0' not allowed.");
     Warning();
-    if (pinfo.pic)     free(pinfo.pic);      pinfo.pic     = (byte *) NULL;
-    if (pinfo.comment) free(pinfo.comment);  pinfo.comment = (char *) NULL;
+    if (pinfo.pic)     { free(pinfo.pic);     } pinfo.pic     = (byte *) NULL;
+    if (pinfo.comment) { free(pinfo.comment); } pinfo.comment = (char *) NULL;
     goto FAILED;
   }
 
@@ -2631,7 +2629,7 @@ ms_auto_no:
   if (!pinfo.pic) {  /* must've failed in the 8-24 or 24-8 conversion */
     SetISTR(ISTR_INFO,"Couldn't do %s conversion.",
 	    (picType==PIC24) ? "8->24" : "24->8");
-    if (pinfo.comment) free(pinfo.comment);  pinfo.comment = (char *) NULL;
+    if (pinfo.comment) { free(pinfo.comment); } pinfo.comment = (char *) NULL;
     Warning();
     goto FAILED;
   }
@@ -2744,9 +2742,8 @@ ms_auto_no:
     SetCropString();
   }
   else {
-    int w,h,aspWIDE,aspHIGH,oldemode;
+    int w,h,aspWIDE,aspHIGH;
 
-    oldemode = epicMode;
     epicMode = EM_RAW;   /* be in raw mode for all intermediate conversions */
     cpic = pic;  cWIDE = pWIDE;  cHIGH = pHIGH;  cXOFF = cYOFF = 0;
     epic = cpic; eWIDE = cWIDE;  eHIGH = cHIGH;
@@ -3203,7 +3200,6 @@ int ReadFileType(fname)
   else if ((magicno[0]==  1 && magicno[1]==  1 &&
             magicno[2]== 77 && magicno[3]==154 &&
             magicno[4]==128 && magicno[5]==  0 &&
-            magicno[6]==  1 && magicno[7]== 77 ||
             magicno[6]==  1 && magicno[7]== 77) ||
             highresfax || lowresfax || !strcmp(fname+strlen(fname)-3,".g3")) {
                if (!lowresfax) highresfax = 1;
@@ -4448,7 +4444,6 @@ void HandleDispMode()
 
   static int haveoldinfo = 0;
   static Window            oldMainW;
-  static int               oldCmapMode;
   static XSizeHints        oldHints;
   static XWindowAttributes oldXwa;
   int i;
@@ -4579,7 +4574,6 @@ void HandleDispMode()
       /* save current window stuff */
       haveoldinfo = 1;
       oldMainW = mainW;
-      oldCmapMode = colorMapMode;
 
       GetWindowPos(&oldXwa);
       if (!XGetNormalHints(theDisp, mainW, &oldHints)) oldHints.flags = 0;
@@ -4655,7 +4649,7 @@ static void add_filelist_to_namelist(flist, nlist, numn, maxn)
   while (*numn < maxn) {
     char *s, *nlp, fbuf[MAXPATHLEN];
     if (!fgets(fbuf, MAXPATHLEN, fp) ||
-	!(s = (char *) malloc(strlen(fbuf)))) break;
+	!(s = (char *) malloc(strlen(fbuf)+1))) break;
 
     nlp = (char *) rindex(fbuf, '\n');
     if (nlp) *nlp = '\0';

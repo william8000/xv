@@ -67,7 +67,7 @@ LoadG3 ( fname, pinfo )
     PICINFO * pinfo;
 {
     FILE *fp;
-    int argn, rows, cols, row, col, i;
+    int rows, cols, row, col, i;
     byte* bytes[MAXROWS];
     byte* bp;
 

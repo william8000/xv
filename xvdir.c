@@ -679,7 +679,7 @@ int ClickDirW(x, y, button)
       pos_start = posOfCoordinate(clkx_start);
 
       clkx_now = clkx_start;
-      pos_prev = -1;
+      pos_prev = pos_now = -1;
       selPos=selLen = 0;
       while (XQueryPointer(theDisp, dirW,
                            &dummy_root, &dummy_child, &dummy_rx, &dummy_ry,

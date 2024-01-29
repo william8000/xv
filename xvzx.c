@@ -38,7 +38,7 @@ int LoadZX(fname, pinfo)
 
   FILE  *fp;
   unsigned int    c, c1;
-  int   x,y, trunc;
+  int   x,y;
   byte  *zxfile;
 
   bname = BaseName(fname);
@@ -62,7 +62,7 @@ int LoadZX(fname, pinfo)
 
   /* Load it in en bloc */
   memset(zxfile, 0, 7040);
-  if (fread(zxfile, 1, 7040, fp) < 7040) trunc = 1;
+  if (fread(zxfile, 1, 7040, fp) < 7040) /* trunc = 1 */;
 
   /* Transform to 8-bit */
 

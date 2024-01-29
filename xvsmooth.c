@@ -436,7 +436,7 @@ int   is24, swide, shigh, dwide, dhigh;
   byte *cptr;
   int  i,j;
   int  *lbufR, *lbufG, *lbufB;
-  int  pixR, pixG, pixB, bperpix;
+  int  pixR, pixG, pixB;
   int  lastline, thisline, lastpix, linecnt, pixcnt;
   int  *pixarr, *paptr;
 
@@ -460,8 +460,6 @@ int   is24, swide, shigh, dwide, dhigh;
     if (pixarr) free(pixarr);
     return 1;
   }
-
-  bperpix = (is24) ? 3 : 1;
 
   for (j=0; j<=swide; j++)
     pixarr[j] = ((2 * j + 1) * dwide) / (2 * swide);
@@ -555,7 +553,7 @@ byte *DoColorDither(pic24, pic8, w, h, rmap, gmap, bmap,
   int  i, j, rerr, gerr, berr, pwide3;
   int  imax, jmax;
   int key;
-  long cnt1, cnt2;
+  long cnt1;
   int fserrmap[512];   /* -255 .. 0 .. +255 */
 
   /* compute somewhat non-linear floyd-steinberg error mapping table */
@@ -567,7 +565,7 @@ byte *DoColorDither(pic24, pic8, w, h, rmap, gmap, bmap,
     { fserrmap[256+i] = j;  fserrmap[256-i] = -j; }
 
 
-  cnt1 = cnt2 = 0;
+  cnt1 = 0;
   pwide3 = w*3;  imax = h-1;  jmax = w-1;
   ep = (pic24) ? pic24 : pic8;
 
@@ -670,8 +668,6 @@ byte *DoColorDither(pic24, pic8, w, h, rmap, gmap, bmap,
       if (cache[key]) { *np = (byte) (cache[key] - 1);  cnt1++;	}
       else {
 	/* not in cache, have to search the colortable */
-	cnt2++;
-
         mind = 10000;
 	for (k=closest=0; k<maplen && mind>7; k++) {
 	  d = abs(r2 - rdisp[k])
@@ -760,7 +756,6 @@ byte *Do332ColorDither(pic24, pic8, w, h, rmap, gmap, bmap,
   int *thisline, *nextline, *thisptr, *nextptr, *tmpptr;
   int  i, j, rerr, gerr, berr, pwide3;
   int  imax, jmax;
-  long cnt1, cnt2;
   int  fserrmap[512];   /* -255 .. 0 .. +255 */
 
   /* compute somewhat non-linear floyd-steinberg error mapping table */
@@ -772,7 +767,6 @@ byte *Do332ColorDither(pic24, pic8, w, h, rmap, gmap, bmap,
     { fserrmap[256+i] = j;  fserrmap[256-i] = -j; }
 
 
-  cnt1 = cnt2 = 0;
   pwide3 = w*3;  imax = h-1;  jmax = w-1;
 
   /* attempt to malloc things */
