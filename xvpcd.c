@@ -1160,8 +1160,9 @@ gethuffdata(  byte *luma,
 {
 static  byte  clip[3*256];
   int  *hufftable[3], *huffstart = NULL, *huffptr = NULL;
-  int  row, col, plane, i, result = 1;
+  int  row, plane, i, result = 1;
 #if TRACE
+  int  col;
   int  uflow = 0, oflow = 0;
 #endif
   byte  *pixelptr = NULL;
@@ -1220,7 +1221,10 @@ static  byte  clip[3*256];
     if(is24() == 0xfffffe) {
       skip24();
       plane = get2();
-      row = get13(); col = 0;
+      row = get13();
+#if TRACE
+      col = 0;
+#endif
       skip1();
       if(row >= maxrownumber) {
         trace((stderr,

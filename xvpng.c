@@ -449,7 +449,6 @@ int WritePNG(fp, pic, ptype, w, h, rmap, gmap, bmap, numcols)
   /* Stuff for v1.5 compliance */
   png_byte	bit_depth;
   png_byte	color_type;
-  int		num_palette;
   int		num_text;
   int		max_text;
   png_time	mod_time;
@@ -487,7 +486,7 @@ int WritePNG(fp, pic, ptype, w, h, rmap, gmap, bmap, numcols)
   {
     if ((int)cDial.val == 0)
       png_set_filter(png_ptr, 0, PNG_FILTER_NONE);
-      filter = PNG_FILTER_NONE;
+    filter = PNG_FILTER_NONE;
   }
   else
   {
@@ -1006,7 +1005,7 @@ int LoadPNG(fname, pinfo)
 	  ", %sinterlaced. (%d bytes)",
 	  png_get_interlace_type(png_ptr, info_ptr) ? "" : "non-", filesize);
 
-  sprintf(pinfo->shrtInfo, "%lux%lu PNG", png_get_image_width(png_ptr, info_ptr), png_get_image_height(png_ptr, info_ptr));
+  sprintf(pinfo->shrtInfo, "%lux%lu PNG", (unsigned long) png_get_image_width(png_ptr, info_ptr), (unsigned long) png_get_image_height(png_ptr, info_ptr));
 
   if (png_get_bit_depth(png_ptr, info_ptr) < 8)
       png_set_packing(png_ptr);

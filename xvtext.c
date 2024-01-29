@@ -379,9 +379,11 @@ int TextView(fname)
   int   filetype;
   long  textlen;
   char *text, buf[512], title[128], rfname[MAXPATHLEN+1];
-  char basefname[128];  /* just current fname, no path */
   FILE *fp;
   char filename[MAXPATHLEN+1];
+#ifdef VMS
+  char basefname[128];  /* just current fname, no path */
+#endif
 
   strncpy(filename, fname, sizeof(filename) - 1);
 #ifdef AUTO_EXPAND
@@ -389,7 +391,6 @@ int TextView(fname)
   Dirtovd(filename);
 #endif
 
-  basefname[0] = '\0';
   strncpy(rfname, filename, sizeof(rfname) - 1);
 
   /* see if this file is compressed.  if it is, uncompress it, and view
@@ -401,6 +402,7 @@ int TextView(fname)
     if (!UncompressFile(filename, rfname, filetype)) return FALSE;
 #else
     /* chop off trailing '.Z' from friendly displayed basefname, if any */
+    basefname[0] = '\0';
     strncpy (basefname, filename, 128 - 1);
     *rindex (basefname, '.') = '\0';
     if (!UncompressFile(basefname, rfname, filetype)) return FALSE;
